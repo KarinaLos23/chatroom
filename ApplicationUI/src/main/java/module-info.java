@@ -10,6 +10,9 @@ module com.chatroomui.applicationui {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
 
+    requires jakarta.ws.rs;
+
     opens com.chatroomui.applicationui to javafx.fxml;
     exports com.chatroomui.applicationui;
+    exports com.chatroomui.applicationui.dto;
 }

@@ -1,37 +1,63 @@
 package com.chatroomui.applicationui;
 
+import com.chatroomui.applicationui.dto.Message;
+import com.chatroomui.applicationui.dto.MessageRequest;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ApplicationController {
     @FXML private TextField textField;
     @FXML private TextArea textArea;
+    Client client = ClientBuilder.newClient();
 
     private String username;
-    private String message;
 
     @FXML
     public void sendMessage() {
-        setMessage();
-        if (message.length() > 0 && message != null && !message.isEmpty()) {
+        String message = textField.getText();
+        if (message.length() > 0) {
             textArea.appendText("\n" + username + ": "+ message);
             textField.setText("");
+            WebTarget messagesTarget = client.target("https://java-bootcamp-chatroom.herokuapp.com").path("message");
+            Response response = messagesTarget
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(Entity.entity(new Message(message, username), MediaType.APPLICATION_JSON));
+            System.out.println("Response " + response.readEntity(String.class));
         }
     }
-    protected void userJoinedChat(String username) {
+    private void userJoinedChat(String username) {
         textArea.appendText(username + " has joined the chat");
     }
 
-    protected void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
-    }
-
-    private void setMessage() {
-        this.message = textField.getText();
-    }
-
-    protected String getMessage() {
-        return message;
+        userJoinedChat(username);
+//        new Timer().scheduleAtFixedRate(new TimerTask() {
+//            public void run() {
+//                WebTarget messagesTarget = client.target("https://java-bootcamp-chatroom.herokuapp.com").path("messages");
+//                Response messagesResponse = messagesTarget
+//                        .request(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .post(Entity.entity(new MessageRequest(null, 1, "userToken"), MediaType.APPLICATION_JSON));
+//                Message[] msgs = messagesResponse.readEntity(Message[].class);
+//                for (Message m : msgs) {
+//                    textArea.appendText("\n" + username + ": "+ m.getMessage());
+//                }
+//                System.out.println("Response " + Arrays.toString(msgs));
+//            }
+//        }, 1000, 2000);
     }
 }
