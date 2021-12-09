@@ -16,7 +16,7 @@ public class LoginController {
     private String username;
 
     @FXML
-    public void setNextScene(ActionEvent event) throws IOException {
+    public void setNextScene(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("application.fxml"));
         Parent root = loader.load();
 
