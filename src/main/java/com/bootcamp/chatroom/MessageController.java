@@ -21,11 +21,11 @@ public class MessageController {
 
     @PostMapping("/message")
     Message newMessage(@RequestBody Message message) throws Exception {
-        verifyUserLogin(message.getUser());
+        verifyUserLogin(message.getSender());
 
         message.setTimestamp(ZonedDateTime.now());
-        message.setUser(tokenToUserMap.get(message.getUser()));
-        updateUserActivity(message.getUser());
+        message.setSender(tokenToUserMap.get(message.getSender()));
+        updateUserActivity(message.getSender());
         return repository.save(message);
     }
 

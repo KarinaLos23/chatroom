@@ -13,7 +13,7 @@ public class Message {
     private Long id;
 
     private String message;
-    private String user;
+    private String sender;
     private ZonedDateTime timestamp;
 
     public Long getId() {
@@ -32,12 +32,12 @@ public class Message {
         this.message = message;
     }
 
-    public String getUser() {
-        return user;
+    public String getSender() {
+        return sender;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public ZonedDateTime getTimestamp() {
@@ -53,12 +53,12 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message1 = (Message) o;
-        return Objects.equals(id, message1.id) && Objects.equals(message, message1.message) && Objects.equals(user, message1.user) && Objects.equals(timestamp, message1.timestamp);
+        return Objects.equals(id, message1.id) && Objects.equals(message, message1.message) && Objects.equals(sender, message1.sender) && Objects.equals(timestamp, message1.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, message, user, timestamp);
+        return Objects.hash(id, message, sender, timestamp);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Message {
         return "Message{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
-                ", user='" + user + '\'' +
+                ", user='" + sender + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
     }
