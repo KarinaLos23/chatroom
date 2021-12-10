@@ -15,7 +15,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -68,7 +67,7 @@ public class ApplicationController {
                 .post(Entity.entity(new MessageRequest(null, 3, "userToken"), MediaType.APPLICATION_JSON));
         Message[] msgs = messagesResponse.readEntity(Message[].class);
         for (Message m : msgs) {
-            textArea.appendText("\n" + m.getUser() + ": "+ m.getMessage());
+            textArea.appendText("\n" + m.getSender() + ": "+ m.getMessage());
             lastMessageId = m.getId();
         }
         System.out.println("Response " + Arrays.toString(msgs));
@@ -83,8 +82,8 @@ public class ApplicationController {
                         .post(Entity.entity(new MessageRequest(lastMessageId, 0, "userToken"), MediaType.APPLICATION_JSON));
                 Message[] msgs = messagesResponse.readEntity(Message[].class);
                 for (Message m : msgs) {
-                    if (!username.equals(m.getUser())) {
-                        textArea.appendText("\n" + m.getUser() + ": "+ m.getMessage());
+                    if (!username.equals(m.getSender())) {
+                        textArea.appendText("\n" + m.getSender() + ": "+ m.getMessage());
                     }
                     lastMessageId = m.getId();
                 }
