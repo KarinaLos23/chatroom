@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     public List<Message> findByIdGreaterThan(Long id);
+    public List<Message> findByChannelName(String channelName);
 }
