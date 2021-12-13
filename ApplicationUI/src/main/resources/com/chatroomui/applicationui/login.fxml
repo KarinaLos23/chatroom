@@ -4,14 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatroomui.applicationui.LoginController">
-   <children>
-      <TextField fx:id="usernameField" focusTraversable="false" layoutX="51.0" layoutY="99.0" promptText="Enter your username" />
-      <Button fx:id="nextScene" defaultButton="true" layoutX="79.0" layoutY="144.0" mnemonicParsing="false" onAction="#setNextScene" text="Start chatting!" />
-      <Label fx:id="greetingLabel" alignment="CENTER" layoutX="14.0" layoutY="43.0" prefHeight="34.0" prefWidth="222.0" text="Welcome to chat room application!" textAlignment="CENTER">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0"
+            prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.chatroomui.applicationui.LoginController">
+    <children>
+        <TextField fx:id="usernameField" focusTraversable="false" layoutX="51.0" layoutY="99.0"
+                   promptText="Enter your username"/>
+        <Button fx:id="nextScene" defaultButton="true" layoutX="79.0" layoutY="144.0" mnemonicParsing="false"
+                onAction="#setNextScene" text="Start chatting!"/>
+        <Label fx:id="greetingLabel" alignment="CENTER" layoutX="14.0" layoutY="43.0" prefHeight="34.0"
+               prefWidth="222.0" text="Welcome to chat room application!" textAlignment="CENTER">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+    </children>
 </AnchorPane>
