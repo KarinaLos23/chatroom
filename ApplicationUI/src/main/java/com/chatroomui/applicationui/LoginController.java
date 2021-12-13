@@ -9,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class LoginController {
     @FXML private TextField usernameField;
     private String username;
@@ -22,13 +20,16 @@ public class LoginController {
 
         setUsername();
 
-        ApplicationController controller = loader.getController();
-        controller.setUsername(username);
+        final ApplicationController controller = loader.getController();
+        controller.initialize(username);
 
         Scene scene = new Scene(root);
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setOnCloseRequest(e -> {
+            controller.stop();
+        });
         stage.show();
     }
 

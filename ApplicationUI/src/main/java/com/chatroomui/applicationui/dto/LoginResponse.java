@@ -3,6 +3,9 @@ package com.chatroomui.applicationui.dto;
 public class LoginResponse {
     private String userToken;
 
+    public LoginResponse() {
+    }
+
     public LoginResponse(String token) {
         userToken = token;
     }

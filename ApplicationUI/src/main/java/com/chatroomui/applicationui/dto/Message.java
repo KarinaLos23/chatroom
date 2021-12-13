@@ -9,6 +9,7 @@ public class Message {
     private String message;
     private String sender;
     private ZonedDateTime timestamp;
+    private String channelName;
 
     public Message() {
     }
@@ -48,6 +49,14 @@ public class Message {
 
     public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     @Override
