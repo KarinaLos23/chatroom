@@ -4,14 +4,16 @@ public class MessageRequest {
     private Long messageId;
     private Integer limit;
     private String userToken;
+    private String channelName;
 
     public MessageRequest() {
     }
 
-    public MessageRequest(Long messageId, Integer limit, String userToken) {
+    public MessageRequest(Long messageId, Integer limit, String userToken, String channelName) {
         this.messageId = messageId;
         this.limit = limit;
         this.userToken = userToken;
+        this.channelName = channelName;
     }
 
     public String getUserToken() {
@@ -36,5 +38,13 @@ public class MessageRequest {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

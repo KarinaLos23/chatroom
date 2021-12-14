@@ -18,8 +18,11 @@ import java.util.TimerTask;
 public class ApplicationController {
     private final String hostname = "https://java-bootcamp-chatroom.herokuapp.com";
     private final Timer timer = new Timer();
-    @FXML private TextField textField;
-    @FXML private TextArea textArea;
+    private final String mainChannel = "Main";
+    @FXML
+    private TextField textField;
+    @FXML
+    private TextArea textArea;
     Client client = ClientBuilder.newClient();
 
     private String username;
@@ -30,19 +33,15 @@ public class ApplicationController {
     public void sendMessage() {
         String message = textField.getText();
         if (message.length() > 0) {
-            textArea.appendText("\n" + username + ": "+ message);
+            textArea.appendText(username + ": " + message + "\n");
             textField.setText("");
-            String response = postRequest("message", new Message(message, userToken), String.class);
+            String response = postRequest("message", new Message(message, userToken, mainChannel), String.class);
             System.out.println("Response " + response);
         }
-    }
-    private void userJoinedChat(String username) {
-        textArea.appendText(username + " has joined the chat");
     }
 
     public void initialize(String username) {
         this.username = username;
-        userJoinedChat(username);
 
         // login example
         LoginResponse lr = postRequest("login", new LoginRequest(username), LoginResponse.class);
@@ -50,10 +49,11 @@ public class ApplicationController {
         userToken = lr.getUserToken();
 
         //first query for messages
-        Message[] msgs = postRequest("messages", new MessageRequest(null, 3, userToken), Message[].class);
+        Message[] msgs = postRequest("messages", new MessageRequest(null, 20, userToken,
+                mainChannel), Message[].class);
 
         for (Message m : msgs) {
-            textArea.appendText("\n" + m.getSender() + ": "+ m.getMessage());
+            textArea.appendText(m.getSender() + ": " + m.getMessage() + "\n");
             lastMessageId = m.getId();
         }
         System.out.println("Response " + Arrays.toString(msgs));
@@ -61,11 +61,11 @@ public class ApplicationController {
         // continuous queries for messages
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                Message[] msgs = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken),
+                Message[] msgs = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken, mainChannel),
                         Message[].class);
                 for (Message m : msgs) {
                     if (!username.equals(m.getSender())) {
-                        textArea.appendText("\n" + m.getSender() + ": "+ m.getMessage());
+                        textArea.appendText(m.getSender() + ": " + m.getMessage() + "\n");
                     }
                     lastMessageId = m.getId();
                 }

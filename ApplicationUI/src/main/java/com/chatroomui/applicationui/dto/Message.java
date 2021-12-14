@@ -14,9 +14,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(String message, String sender) {
+    public Message(String message, String sender, String channelName) {
         this.message = message;
         this.sender = sender;
+        this.channelName = channelName;
     }
 
     public Long getId() {
