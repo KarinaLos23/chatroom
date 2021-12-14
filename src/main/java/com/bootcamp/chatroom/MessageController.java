@@ -47,7 +47,7 @@ public class MessageController {
 
     @PostMapping("/login")
     LoginResponse login(@RequestBody LoginRequest loginRequest) throws Exception {
-        if (isTimedOut(loginRequest.getUsername())) {
+        if (isActive(loginRequest.getUsername())) {
             throw new Exception("User already signed in");
         }
         String token = UUID.randomUUID().toString();
@@ -76,6 +76,7 @@ public class MessageController {
         newMessage(message);
 
         tokenToUserMap.remove(token);
+        userActivityMap.remove(username);
     }
 
     private void verifyUserLogin(String userToken) throws Exception {
@@ -84,7 +85,7 @@ public class MessageController {
         }
     }
 
-    private boolean isTimedOut(String username) {
+    private boolean isActive(String username) {
         return System.currentTimeMillis() - userActivityMap.getOrDefault(username, 0L) < 30000;
     }
 
