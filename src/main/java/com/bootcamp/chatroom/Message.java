@@ -17,6 +17,15 @@ public class Message {
     private ZonedDateTime timestamp;
     private String channelName;
 
+    public Message() {
+    }
+
+    public Message(String message, String sender, String channelName) {
+        this.message = message;
+        this.sender = sender;
+        this.channelName = channelName;
+    }
+
     public Long getId() {
         return id;
     }
