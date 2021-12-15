@@ -2,11 +2,13 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatroomui.applicationui.ApplicationController">
     <children>
         <TextField id="textField" fx:id="textField" layoutX="374.0" layoutY="444.0" prefHeight="35.0" prefWidth="335.0" />
         <Button id="sendButton" fx:id="sendButton" defaultButton="true" layoutX="725.0" layoutY="444.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="35.0" prefWidth="60.0" text="Send" />
-        <TextArea id="textArea" fx:id="textArea" editable="false" layoutX="374.0" layoutY="31.0" prefHeight="400.0" prefWidth="411.0" wrapText="true" />
+      <TextArea fx:id="messageArea" layoutX="141.0" layoutY="444.0" prefHeight="35.0" prefWidth="220.0" />
+      <TextFlow fx:id="textFlow" layoutX="374.0" layoutY="14.0" prefHeight="420.0" prefWidth="420.0" style="-fx-border-style: solid; -fx-border-color: grey; -fx-border-radius: 10;" />
     </children>
 </AnchorPane>
