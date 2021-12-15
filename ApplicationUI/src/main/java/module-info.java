@@ -12,7 +12,7 @@ module com.chatroomui.applicationui {
 
     requires jakarta.ws.rs;
 
-    opens com.chatroomui.applicationui to javafx.fxml;
+    opens com.chatroomui.applicationui;
     exports com.chatroomui.applicationui;
     exports com.chatroomui.applicationui.dto;
 }
