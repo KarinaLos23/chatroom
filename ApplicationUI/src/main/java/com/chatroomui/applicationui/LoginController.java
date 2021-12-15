@@ -6,12 +6,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginController {
     @FXML private TextField usernameField;
+    @FXML private ColorPicker colorPicker;
     private String username;
+    private Color color;
 
     @FXML
     public void setNextScene(ActionEvent event) throws Exception {
@@ -19,9 +23,10 @@ public class LoginController {
         Parent root = loader.load();
 
         setUsername();
+        setColor();
 
         final ApplicationController controller = loader.getController();
-        controller.initialize(username);
+        controller.initialize(username, color);
 
         Scene scene = new Scene(root);
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -37,8 +42,8 @@ public class LoginController {
         this.username = usernameField.getText();
     }
 
-    public String getUsername() {
-        return this.username;
+    private void setColor() {
+        this.color = colorPicker.getValue();
     }
 }
 

@@ -10,10 +10,15 @@ import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 
 public class ApplicationController {
     private final String hostname = "https://java-bootcamp-chatroom.herokuapp.com";
@@ -22,54 +27,77 @@ public class ApplicationController {
     @FXML
     private TextField textField;
     @FXML
-    private TextArea textArea;
+    private TextArea messageArea;
+    @FXML
+    private TextFlow textFlow;
     Client client = ClientBuilder.newClient();
 
     private String username;
     private long lastMessageId;
     private String userToken;
 
+    public void textAreaFunctionality() {
+        messageArea.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                event.consume();
+                if (event.isShiftDown()) {
+                    messageArea.appendText(System.getProperty("line.separator"));
+                } else {
+                    if(!messageArea.getText().isEmpty()){
+                        sendMessage();
+                    }
+                }
+            }
+        });
+    }
+
     @FXML
     public void sendMessage() {
         String message = textField.getText();
         if (message.length() > 0) {
-            textArea.appendText(username + ": " + message + "\n");
+            Text nameText = new Text(username);
+            //nameText.setFill(Color.RED); this was only for testing
+            textFlow.getChildren().add(new Text(nameText.getText() + ": " + message + "\n"));
             textField.setText("");
             String response = postRequest("message", new Message(message, userToken, mainChannel), String.class);
             System.out.println("Response " + response);
         }
     }
 
-    public void initialize(String username) {
+    public void initialize(String username, Color color) {
         this.username = username;
 
         // login example
-        LoginResponse lr = postRequest("login", new LoginRequest(username), LoginResponse.class);
-        System.out.println("Response " + lr);
-        userToken = lr.getUserToken();
+        LoginResponse loginResponse = postRequest("login", new LoginRequest(username), LoginResponse.class);
+        System.out.println("Response " + loginResponse);
+        userToken = loginResponse.getUserToken();
 
         //first query for messages
-        Message[] msgs = postRequest("messages", new MessageRequest(null, 20, userToken,
+        Message[] messages = postRequest("messages", new MessageRequest(null, 20, userToken,
                 mainChannel), Message[].class);
 
-        for (Message m : msgs) {
-            textArea.appendText(m.getSender() + ": " + m.getMessage() + "\n");
-            lastMessageId = m.getId();
+        for (Message message : messages) {
+            Text nameText = new Text(message.getSender());
+            nameText.setFill(color);
+            textFlow.getChildren().add(new Text(nameText.getText() + ": " + message.getMessage() + "\n"));
+            lastMessageId = message.getId();
         }
-        System.out.println("Response " + Arrays.toString(msgs));
+        System.out.println("Response " + Arrays.toString(messages));
 
         // continuous queries for messages
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                Message[] msgs = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken, mainChannel),
+                Message[] messages = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken, mainChannel),
                         Message[].class);
-                for (Message m : msgs) {
-                    if (!username.equals(m.getSender())) {
-                        textArea.appendText(m.getSender() + ": " + m.getMessage() + "\n");
+                for (Message message : messages) {
+                    if (!username.equals(message.getSender())) {
+                        Text nameText = new Text(message.getSender());
+                        nameText.setFill(color);
+                        textFlow.getChildren().add(new Text(nameText.getText() + ": " + message.getMessage() + "\n"));
                     }
-                    lastMessageId = m.getId();
+                    lastMessageId = message.getId();
                 }
-                System.out.println("Response " + Arrays.toString(msgs));
+                System.out.println("Response " + Arrays.toString(messages));
             }
         }, 1000, 2000);
     }
