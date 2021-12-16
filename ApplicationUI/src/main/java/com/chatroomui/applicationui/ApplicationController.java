@@ -91,7 +91,8 @@ public class ApplicationController {
         if (tab.isEmpty()) {
             return;
         }
-        TextFlow flow = (TextFlow) ((ScrollPane) tab.get().getContent()).getContent();
+        ScrollPane scrollPane = (ScrollPane) tab.get().getContent();
+        TextFlow flow = (TextFlow) scrollPane.getContent();
         Text nameText = new Text("  " + user + " > ");
         if (user.equals(username)) {
             nameText.setFill(usernameColor);
@@ -106,6 +107,8 @@ public class ApplicationController {
         flow.getChildren().add(nameText);
         flow.getChildren().add(new Text(message));
         flow.getChildren().add(new Text(System.lineSeparator()));
+
+        scrollPane.setVvalue(1);
     }
 
     private void executeCommand(String message) {
