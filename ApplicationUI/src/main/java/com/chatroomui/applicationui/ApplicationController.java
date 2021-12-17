@@ -42,12 +42,12 @@ public class ApplicationController {
         this.username = username;
         this.usernameColor = color;
 
-        addChannel(mainChannel);
-
         // login
         LoginResponse loginResponse = postRequest("login", new LoginRequest(username), LoginResponse.class);
         System.out.println("Response " + loginResponse);
         userToken = loginResponse.getUserToken();
+
+        addChannel(mainChannel);
 
         // continuous queries for messages
         scheduleMessageUpdates();
@@ -78,6 +78,7 @@ public class ApplicationController {
         sp.setFitToWidth(true);
         Tab tab = new Tab(name, sp);
         channelPane.getTabs().add(tab);
+        initialMessageQuery(name);
         channelPane.getSelectionModel().select(tab);
     }
 
@@ -122,13 +123,12 @@ public class ApplicationController {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 final Long lastMessageId = lastMessageMap.get(getCurrentChannel());
-                Message[] messages = postRequest("messages", new MessageRequest(lastMessageId, 20, userToken, getCurrentChannel()),
+                Message[] messages = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken, getCurrentChannel()),
                         Message[].class);
                 Platform.runLater(() -> {
-                    boolean isInitialQuery = lastMessageId == null;
                     for (Message message : messages) {
                         boolean ownMessage = username.equals(message.getSender());
-                        if (!ownMessage || isInitialQuery) {
+                        if (!ownMessage) {
                             addMessage(message.getChannelName(), message.getMessage(), message.getSender(), message.getTimestamp());
                         }
                         lastMessageMap.put(message.getChannelName(), message.getId());
@@ -137,6 +137,15 @@ public class ApplicationController {
                 System.out.println("Response " + Arrays.toString(messages));
             }
         }, 0, 500);
+    }
+
+    private void initialMessageQuery(String channel) {
+        Message[] messages = postRequest("messages", new MessageRequest(null, 20, userToken, channel),
+                Message[].class);
+        for (Message message : messages) {
+            addMessage(message.getChannelName(), message.getMessage(), message.getSender(), message.getTimestamp());
+        }
+        System.out.println("Response " + Arrays.toString(messages));
     }
 
     public void stop() {
