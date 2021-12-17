@@ -123,7 +123,7 @@ public class ApplicationController {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 final Long lastMessageId = lastMessageMap.get(getCurrentChannel());
-                Message[] messages = postRequest("messages", new MessageRequest(lastMessageId, 0, userToken, getCurrentChannel()),
+                Message[] messages = postRequest("messages", new MessageRequest(lastMessageId, 100, userToken, getCurrentChannel()),
                         Message[].class);
                 Platform.runLater(() -> {
                     for (Message message : messages) {
@@ -144,6 +144,7 @@ public class ApplicationController {
                 Message[].class);
         for (Message message : messages) {
             addMessage(message.getChannelName(), message.getMessage(), message.getSender(), message.getTimestamp());
+            lastMessageMap.put(message.getChannelName(), message.getId());
         }
         System.out.println("Response " + Arrays.toString(messages));
     }
